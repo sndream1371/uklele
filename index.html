@@ -5,111 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>🎵 스마트 오디오 플레이어</title>
     <style>
-body {
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    background-color: #fce4ec;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* 화면 상단에 배치 */
-    height: 100vh;
-    overflow: hidden;
-}
-
-.container {
-    background: white;
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-    width: 95%;
-    max-width: 480px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px; /* 화면 상단에 붙이기 */
-}
-
-.top-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-
-.file-input-container {
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 10px;
-}
-
-.file-label, .playlist-btn {
-    flex: 1;
-    background: #ff4081;
-    color: white;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    margin: 0 5px;
-}
-
-#fileInput {
-    display: none;
-}
-
-audio {
-    width: 100%;
-    margin-top: 10px;
-}
-
-.group {
-    width: 100%;
-    margin-top: 10px;
-}
-
-.button-group {
-    display: flex;
-    justify-content: center;
-    margin-top: 5px;
-}
-
-.control-btn {
-    padding: 8px 12px;
-    margin: 5px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 8px;
-}
-
-/* 반응형: PC 화면에서 중앙 정렬 유지 */
-@media screen and (min-width: 768px) {
-    .container {
-        max-width: 500px;
-        padding: 20px;
-    }
-    .file-label, .playlist-btn {
-        font-size: 18px;
-        padding: 12px;
-    }
-    .control-btn {
-        font-size: 16px;
-    }
-}
-
-        h2 {
-            color: #d81b60;
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #fce4ec;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            overflow: auto;
         }
+
+        .container {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            width: 95%;
+            max-width: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
         .file-input-container {
             margin: 10px 0;
         }
+
         .file-label {
             background: #ff4081;
             color: white;
@@ -119,25 +44,123 @@ audio {
             font-size: 16px;
             font-weight: bold;
         }
+
         #fileInput {
             display: none;
         }
-        .group {
+
+        audio {
+            width: 100%;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .controls {
+            width: 100%;
             margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .playlist {
+            width: 100%;
+            min-height: 50px;
+            max-height: 150px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: #fff;
+        }
+
+        .playlist-item {
+            padding: 8px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+            font-size: 14px;
+            word-break: break-all;
+        }
+
+        .playlist-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .playlist-item.active {
+            background-color: #e0f7fa;
+            font-weight: bold;
+        }
+
+        .progress-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress {
+            height: 100%;
+            background: #ff4081;
+            border-radius: 5px;
+            width: 0%;
+        }
+
+        .time-display {
+            margin-top: 5px;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .play-btn {
+            background: #1e88e5;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .play-btn.paused::before {
+            content: "▶";
+        }
+
+        .play-btn.playing::before {
+            content: "❚❚";
+        }
+
+        .group {
+            width: 100%;
+            margin-top: 10px;
             padding: 10px;
             border-radius: 10px;
             text-align: center;
         }
+
         .speed-group {
             background: #bbdefb;
         }
+
         .pitch-group {
             background: #c8e6c9;
         }
+
         label {
             font-size: 16px;
             font-weight: bold;
         }
+
         .slider {
             width: 90%;
             margin: 10px auto;
@@ -147,11 +170,13 @@ audio {
             outline: none;
             cursor: pointer;
         }
+
         .button-group {
             display: flex;
             justify-content: center;
             margin-top: 10px;
         }
+
         .control-btn {
             padding: 8px 12px;
             margin: 5px;
@@ -161,14 +186,17 @@ audio {
             font-weight: bold;
             border-radius: 8px;
         }
+
         .speed-btn {
             background-color: #1e88e5;
             color: white;
         }
+
         .pitch-btn {
             background-color: #43a047;
             color: white;
         }
+
         .reset-btn {
             background: #ff4081;
             color: white;
@@ -179,6 +207,24 @@ audio {
             font-size: 16px;
             margin-top: 10px;
         }
+
+        h2 {
+            color: #d81b60;
+        }
+
+        @media screen and (min-width: 768px) {
+            .container {
+                max-width: 500px;
+                padding: 20px;
+            }
+            .file-label {
+                font-size: 18px;
+                padding: 12px;
+            }
+            .control-btn {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -188,33 +234,41 @@ audio {
 
         <div class="file-input-container">
             <label for="fileInput" class="file-label">파일 선택 📂</label>
-            <input type="file" id="fileInput" accept="audio/*">
+            <input type="file" id="fileInput" accept="audio/*" multiple>
+        </div>
+
+        <div class="controls" id="controls">
+            <div class="playlist" id="playlist"></div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress" id="progress"></div>
+                </div>
+            </div>
+            <div class="time-display" id="timeDisplay">0:00 / 0:00</div>
+            <button class="play-btn paused" id="playBtn" onclick="togglePlay()">▶</button>
         </div>
 
         <audio id="audio" controls controlslist="nodownload noplaybackrate nofullscreen"></audio>
-
 
         <div class="group speed-group">
             <label>⏳ 속도 조절</label>
             <input type="range" id="speedSlider" class="slider" min="0.5" max="2" step="0.01" value="1">
             <p id="speedValue">1.00x</p>
             <div class="button-group">
-                <button class="control-btn speed-btn" onclick="changeSpeed(-0.5)">-0.5x</button>
-                <button class="control-btn speed-btn" onclick="changeSpeed(-0.25)">-0.25x</button>
-                <button class="control-btn speed-btn" onclick="changeSpeed(0.25)">+0.25x</button>
-                <button class="control-btn speed-btn" onclick="changeSpeed(0.5)">+0.5x</button>
+                <button class="control-btn speed-btn" onclick="changeSpeed(-0.1)">-0.1x</button>
+                <button class="control-btn speed-btn" onclick="changeSpeed(0.1)">+0.1x</button>
             </div>
         </div>
 
         <div class="group pitch-group">
-            <label>🎶 피치 조절</label>
-            <input type="range" id="pitchSlider" class="slider" min="0.5" max="2" step="0.01" value="1">
-            <p id="pitchValue">1.00</p>
+            <label>🎶 피치 조절 (세미톤)</label>
+            <input type="range" id="pitchSlider" class="slider" min="-12" max="12" step="0.1" value="0">
+            <p id="pitchValue">0.0</p>
             <div class="button-group">
-                <button class="control-btn pitch-btn" onclick="setPitch(0.89)">C</button>
-                <button class="control-btn pitch-btn" onclick="setPitch(1.00)">D</button>
-                <button class="control-btn pitch-btn" onclick="setPitch(1.12)">E</button>
-                <button class="control-btn pitch-btn" onclick="setPitch(1.19)">F</button>
+                <button class="control-btn pitch-btn" onclick="setPitch(-3)">C</button>
+                <button class="control-btn pitch-btn" onclick="setPitch(0)">D</button>
+                <button class="control-btn pitch-btn" onclick="setPitch(2)">E</button>
+                <button class="control-btn pitch-btn" onclick="setPitch(3)">F</button>
             </div>
         </div>
 
@@ -227,59 +281,231 @@ audio {
         const pitchSlider = document.getElementById('pitchSlider');
         const speedValue = document.getElementById("speedValue");
         const pitchValue = document.getElementById("pitchValue");
-        const audio = document.getElementById('audio');
+        const playlist = document.getElementById("playlist");
+        const progressBar = document.getElementById("progressBar");
+        const progress = document.getElementById("progress");
+        const timeDisplay = document.getElementById("timeDisplay");
+        const playBtn = document.getElementById("playBtn");
 
-        let audioContext, source, playbackRateNode;
+        let audioContext = null;
+        let sourceNode = null;
+        let playlistItems = [];
+        let currentBuffer = null;
+        let startTime = 0;
+        let pausedAt = 0;
+        let isPlaying = false;
 
-        function setupAudio() {
-            if (audioContext) {
-                audioContext.close();
-            }
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            source = audioContext.createMediaElementSource(audio);
-            playbackRateNode = audioContext.createGain();
-            source.connect(playbackRateNode);
-            playbackRateNode.connect(audioContext.destination);
-        }
-
-        fileInput.addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                audio.src = URL.createObjectURL(file);
-                audio.play();
-                setupAudio();
+        fileInput.addEventListener('change', async function(event) {
+            const files = event.target.files;
+            if (files.length > 0) {
+                console.log("선택된 파일 수:", files.length);
+                stopAudio();
+                pausedAt = 0; // 새 파일 로드 시 처음부터 시작
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                playlistItems = Array.from(files);
+                updatePlaylistUI();
+                await playFile(playlistItems[0], 0);
             }
         });
 
+        function updatePlaylistUI() {
+            playlist.innerHTML = "";
+            if (playlistItems.length === 0) {
+                playlist.innerHTML = "<div class='playlist-item'>파일을 선택하세요</div>";
+                progress.style.width = "0%";
+                timeDisplay.textContent = "0:00 / 0:00";
+                playBtn.classList.add("paused");
+                playBtn.classList.remove("playing");
+                return;
+            }
+            playlistItems.forEach((file, index) => {
+                const item = document.createElement("div");
+                item.className = "playlist-item";
+                item.textContent = file.name;
+                item.dataset.index = index;
+                item.addEventListener("click", () => playFile(file, index));
+                playlist.appendChild(item);
+            });
+            highlightActiveItem(0);
+        }
+
+        function highlightActiveItem(index) {
+            const items = playlist.getElementsByClassName("playlist-item");
+            for (let item of items) {
+                item.classList.remove("active");
+                if (parseInt(item.dataset.index) === index) {
+                    item.classList.add("active");
+                }
+            }
+        }
+
+        async function playFile(file, index) {
+            stopAudio();
+            pausedAt = 0; // 새 파일 로드 시 항상 처음부터 시작
+
+            const arrayBuffer = await file.arrayBuffer();
+            currentBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+            sourceNode = audioContext.createBufferSource();
+            sourceNode.buffer = currentBuffer;
+            sourceNode.connect(audioContext.destination);
+
+            const speed = parseFloat(speedSlider.value);
+            const pitch = parseFloat(pitchSlider.value) * 100;
+            sourceNode.playbackRate.value = speed;
+            sourceNode.detune.value = pitch;
+
+            speedValue.textContent = speed.toFixed(2) + "x";
+            pitchValue.textContent = pitchSlider.value;
+            highlightActiveItem(index);
+
+            sourceNode.start(0, pausedAt);
+            startTime = audioContext.currentTime - (pausedAt / speed);
+            isPlaying = true;
+            playBtn.classList.remove("paused");
+            playBtn.classList.add("playing");
+
+            updateProgress();
+        }
+
+        function stopAudio() {
+            if (sourceNode) {
+                sourceNode.stop();
+                sourceNode.disconnect();
+                pausedAt = (audioContext.currentTime - startTime) * sourceNode.playbackRate.value;
+                sourceNode = null;
+            }
+            isPlaying = false;
+            playBtn.classList.add("paused");
+            playBtn.classList.remove("playing");
+        }
+
+        function togglePlay() {
+            if (!currentBuffer) return;
+
+            if (isPlaying) {
+                stopAudio();
+            } else {
+                sourceNode = audioContext.createBufferSource();
+                sourceNode.buffer = currentBuffer;
+                sourceNode.connect(audioContext.destination);
+
+                const speed = parseFloat(speedSlider.value);
+                const pitch = parseFloat(pitchSlider.value) * 100;
+                sourceNode.playbackRate.value = speed;
+                sourceNode.detune.value = pitch;
+
+                sourceNode.start(0, pausedAt);
+                startTime = audioContext.currentTime - (pausedAt / speed);
+                isPlaying = true;
+                playBtn.classList.remove("paused");
+                playBtn.classList.add("playing");
+
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            if (isPlaying && sourceNode) {
+                const currentTime = (audioContext.currentTime - startTime) * sourceNode.playbackRate.value;
+                const duration = currentBuffer.duration;
+                const progressPercent = (currentTime / duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+
+                const currentTimeStr = formatTime(currentTime);
+                const durationStr = formatTime(duration);
+                timeDisplay.textContent = `${currentTimeStr} / ${durationStr}`;
+
+                if (currentTime >= duration) {
+                    stopAudio();
+                    pausedAt = 0; // 곡이 끝나면 처음으로 리셋
+                    progress.style.width = "0%";
+                } else {
+                    requestAnimationFrame(updateProgress);
+                }
+            }
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? "0" + secs : secs}`;
+        }
+
         speedSlider.addEventListener("input", function() {
-            audio.playbackRate = parseFloat(this.value);
-            speedValue.textContent = this.value + "x";
+            const speed = parseFloat(this.value);
+            if (sourceNode) {
+                pausedAt = (audioContext.currentTime - startTime) * sourceNode.playbackRate.value;
+                sourceNode.playbackRate.value = speed;
+                startTime = audioContext.currentTime - (pausedAt / speed);
+            }
+            speedValue.textContent = speed.toFixed(2) + "x";
         });
 
         pitchSlider.addEventListener("input", function() {
-            setPitch(parseFloat(this.value));
+            const pitch = parseFloat(this.value) * 100;
+            if (sourceNode) {
+                sourceNode.detune.value = pitch;
+            }
+            pitchValue.textContent = this.value;
         });
 
         function changeSpeed(amount) {
-            let newSpeed = Math.min(2, Math.max(0.5, audio.playbackRate + amount));
-            audio.playbackRate = newSpeed;
+            let newSpeed = Math.min(2, Math.max(0.5, parseFloat(speedSlider.value) + amount));
             speedSlider.value = newSpeed;
+            if (sourceNode) {
+                pausedAt = (audioContext.currentTime - startTime) * sourceNode.playbackRate.value;
+                sourceNode.playbackRate.value = newSpeed;
+                startTime = audioContext.currentTime - (pausedAt / newSpeed);
+            }
             speedValue.textContent = newSpeed.toFixed(2) + "x";
         }
 
-        function setPitch(value) {
-            audio.playbackRate = value;
-            pitchSlider.value = value;
-            pitchValue.textContent = value.toFixed(2);
+        function setPitch(semitones) {
+            pitchSlider.value = semitones;
+            const pitch = semitones * 100;
+            if (sourceNode) {
+                sourceNode.detune.value = pitch;
+            }
+            pitchValue.textContent = semitones;
         }
 
         function resetSettings() {
-            audio.playbackRate = 1;
             speedSlider.value = 1;
-            pitchSlider.value = 1;
-            pitchValue.textContent = "1.00";
+            pitchSlider.value = 0;
+            if (sourceNode) {
+                pausedAt = (audioContext.currentTime - startTime) * sourceNode.playbackRate.value;
+                sourceNode.playbackRate.value = 1;
+                sourceNode.detune.value = 0;
+                startTime = audioContext.currentTime - (pausedAt / 1);
+            }
             speedValue.textContent = "1.00x";
+            pitchValue.textContent = "0.0";
         }
+
+        progressBar.addEventListener("click", (e) => {
+            if (!currentBuffer) return;
+            const rect = progressBar.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            const seekPercent = clickX / width;
+            pausedAt = currentBuffer.duration * seekPercent;
+
+            if (isPlaying) {
+                stopAudio();
+                togglePlay(); // 재생 상태라면 해당 위치에서 다시 시작
+            } else {
+                // 일시정지 상태라면 pausedAt만 업데이트하고 UI 반영
+                const currentTimeStr = formatTime(pausedAt);
+                const durationStr = formatTime(currentBuffer.duration);
+                timeDisplay.textContent = `${currentTimeStr} / ${durationStr}`;
+                progress.style.width = `${seekPercent * 100}%`;
+            }
+        });
+
+        updatePlaylistUI();
     </script>
 
 </body>
