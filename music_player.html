@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🎵 스마트 오디오 플레이어</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #fce4ec;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+        }
+        h2 {
+            color: #d81b60;
+        }
+        .file-input-container {
+            margin: 10px 0;
+        }
+        .file-label {
+            background: #ff4081;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        #fileInput {
+            display: none;
+        }
+        .group {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .speed-group {
+            background: #bbdefb;
+        }
+        .pitch-group {
+            background: #c8e6c9;
+        }
+        label {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .slider {
+            width: 90%;
+            margin: 10px auto;
+            height: 8px;
+            background: #ddd;
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .control-btn {
+            padding: 8px 12px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+        .speed-btn {
+            background-color: #1e88e5;
+            color: white;
+        }
+        .pitch-btn {
+            background-color: #43a047;
+            color: white;
+        }
+        .reset-btn {
+            background: #ff4081;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>🎵 나만의 오디오 플레이어 🎵</h2>
+
+        <div class="file-input-container">
+            <label for="fileInput" class="file-label">파일 선택 📂</label>
+            <input type="file" id="fileInput" accept="audio/*">
+        </div>
+
+        <audio id="audio" controls controlslist="nodownload noplaybackrate nofullscreen"></audio>
+
+
+        <div class="group speed-group">
+            <label>⏳ 속도 조절</label>
+            <input type="range" id="speedSlider" class="slider" min="0.5" max="2" step="0.01" value="1">
+            <p id="speedValue">1.00x</p>
+            <div class="button-group">
+                <button class="control-btn speed-btn" onclick="changeSpeed(-0.25)">-0.25x</button>
+                <button class="control-btn speed-btn" onclick="changeSpeed(-0.5)">-0.5x</button>
+                <button class="control-btn speed-btn" onclick="changeSpeed(0.25)">+0.25x</button>
+                <button class="control-btn speed-btn" onclick="changeSpeed(0.5)">+0.5x</button>
+            </div>
+        </div>
+
+        <div class="group pitch-group">
+            <label>🎶 피치 조절</label>
+            <input type="range" id="pitchSlider" class="slider" min="0.5" max="2" step="0.01" value="1">
+            <p id="pitchValue">1.00</p>
+            <div class="button-group">
+                <button class="control-btn pitch-btn" onclick="setPitch(0.89)">C</button>
+                <button class="control-btn pitch-btn" onclick="setPitch(1.00)">D</button>
+                <button class="control-btn pitch-btn" onclick="setPitch(1.12)">E</button>
+                <button class="control-btn pitch-btn" onclick="setPitch(1.19)">F</button>
+            </div>
+        </div>
+
+        <button class="reset-btn" onclick="resetSettings()">🔄 초기화</button>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const speedSlider = document.getElementById('speedSlider');
+        const pitchSlider = document.getElementById('pitchSlider');
+        const speedValue = document.getElementById("speedValue");
+        const pitchValue = document.getElementById("pitchValue");
+        const audio = document.getElementById('audio');
+
+        let audioContext, source, playbackRateNode;
+
+        function setupAudio() {
+            if (audioContext) {
+                audioContext.close();
+            }
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            source = audioContext.createMediaElementSource(audio);
+            playbackRateNode = audioContext.createGain();
+            source.connect(playbackRateNode);
+            playbackRateNode.connect(audioContext.destination);
+        }
+
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                audio.src = URL.createObjectURL(file);
+                audio.play();
+                setupAudio();
+            }
+        });
+
+        speedSlider.addEventListener("input", function() {
+            audio.playbackRate = parseFloat(this.value);
+            speedValue.textContent = this.value + "x";
+        });
+
+        pitchSlider.addEventListener("input", function() {
+            setPitch(parseFloat(this.value));
+        });
+
+        function changeSpeed(amount) {
+            let newSpeed = Math.min(2, Math.max(0.5, audio.playbackRate + amount));
+            audio.playbackRate = newSpeed;
+            speedSlider.value = newSpeed;
+            speedValue.textContent = newSpeed.toFixed(2) + "x";
+        }
+
+        function setPitch(value) {
+            audio.playbackRate = value;
+            pitchSlider.value = value;
+            pitchValue.textContent = value.toFixed(2);
+        }
+
+        function resetSettings() {
+            audio.playbackRate = 1;
+            speedSlider.value = 1;
+            pitchSlider.value = 1;
+            pitchValue.textContent = "1.00";
+            speedValue.textContent = "1.00x";
+        }
+    </script>
+
+</body>
+</html>
